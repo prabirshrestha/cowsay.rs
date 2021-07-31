@@ -15,6 +15,11 @@ fn main() {
     let options = Options::from_args();
     let message = options.message;
 
+    if message.to_lowercase() == "woof" {
+        eprintln!("A cow shouldn't bark like a dog.");
+        return;
+    }
+
     let eye = if options.dead { "x" } else { "o" };
 
     println!("{}", message);
