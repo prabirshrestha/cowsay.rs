@@ -1,3 +1,4 @@
+use colored::*;
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
@@ -22,7 +23,7 @@ fn main() {
 
     let eye = if options.dead { "x" } else { "o" };
 
-    println!("{}", message);
+    println!("{}", message.bright_yellow().underline().on_purple());
     println!("   \\   ^__^");
     println!("     \\  ({}{})\\______", eye, eye);
     println!("        (__)\\      )\\/\\");
