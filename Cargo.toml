@@ -4,7 +4,8 @@ version = "0.1.0"
 authors = ["Prabir Shrestha <mail@prabir.me>"]
 edition = "2018"
 license = "MIT"
-description = "cowsay"
+readme = "README.md"
+description = "cowsay is a program that generates ASCII art pictures of a cow with a message."
 repository = "https://github.com/prabirshrestha/cowsay.rs"
 
 [dependencies]
