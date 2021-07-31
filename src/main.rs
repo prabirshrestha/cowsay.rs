@@ -2,6 +2,8 @@ use structopt::StructOpt;
 
 #[derive(StructOpt)]
 struct Options {
+    #[structopt(default_value = "Moo!")]
+    /// What does the cow say?
     message: String,
 }
 
