@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - ci
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    env:
+      # Emit backtraces on panics.
+      RUST_BACKTRACE: 1
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build: [linux, linux-arm, macos, winmsvc]
+        include:
+          - build: linux
+            os: ubuntu-latest
+            rust: stable
+            target: x86_64-unknown-linux-musl
+            usecross: false
+          - build: linux-arm
+            os: ubuntu-latest
+            rust: stable
+            target: arm-unknown-linux-musleabihf
+            usecross: true
+          - build: macos
+            os: macos-latest
+            rust: stable
+            target: x86_64-apple-darwin
+            usecross: false
+          - build: winmsvc
+            os: windows-latest
+            rust: stable
+            target: x86_64-pc-windows-msvc
+            usecross: false
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ matrix.rust }}
+        target: ${{ matrix.target }}
+        profile: minimal
+        override: true
+
+    - name: Build
+      uses: actions-rs/cargo@v1
+      with:
+        use-cross: ${{ matrix.usecross }}
+        command: build
+        args: --verbose --locked --all --target ${{ matrix.target }}
+
+    - name: Test
+      uses: actions-rs/cargo@v1
+      with:
+        use-cross: ${{ matrix.usecross }}
+        command: test
+        args: --verbose --all --target ${{ matrix.target }}
+
+  rustfmt:
+    name: rustfmt
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        profile: minimal
+        components: rustfmt
+    - name: rust fmt
+      uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: --all -- --check
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: clippy
+      - name: clippypush
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
