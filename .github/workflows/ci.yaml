@@ -11,7 +11,7 @@ on:
 
 jobs:
   style:
-    name: Check style
+    name: check style
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
