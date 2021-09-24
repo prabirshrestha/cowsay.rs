@@ -117,6 +117,7 @@ jobs:
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
     - name: Build archive
+      if: startsWith(github.ref, 'refs/tags/')
       shell: bash
       run: |
         staging="${{ env.PKG_NAME }}-${{ env.VERSION }}-${{ matrix.target }}"
