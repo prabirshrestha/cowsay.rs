@@ -115,7 +115,7 @@ jobs:
       run: |
         staging="${{ env.PKG_NAME }}-${{ env.VERSION }}-${{ matrix.target }}"
         mkdir -p "$staging"
-        cp {README.md,LICENSE} "$staging/"
+        cp {README.md,LICENSE*} "$staging/"
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
           cp "target/${{ matrix.target }}/release/${{ env.PKG_NAME }}.exe" "$staging/"
           7z a "$staging.zip" "$staging"
