@@ -126,3 +126,12 @@ jobs:
           tar czf "$staging.tar.gz" "$staging"
           echo "ASSET=${staging}.tar.gz" >> $GITHUB_ENV
         fi
+
+    - name: Create draft release and upload asset
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        draft: true
+        files: ${{ ASSET }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
