@@ -57,7 +57,7 @@ jobs:
           - build: linux-arm
             os: ubuntu-latest
             rust: stable
-            target: arm-unknown-linux-musleabihf
+            target: aarch64-unknown-linux-musl
             usecross: true
           - build: macos
             os: macos-latest
