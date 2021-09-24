@@ -86,11 +86,11 @@ jobs:
       with:
         use-cross: ${{ matrix.usecross }}
         command: build
-        args: --verbose --locked --all --target ${{ matrix.target }}
+        args: --verbose --locked --all --release --target ${{ matrix.target }}
 
     - name: Test
       uses: actions-rs/cargo@v1
       with:
         use-cross: ${{ matrix.usecross }}
         command: test
-        args: --verbose --all --target ${{ matrix.target }}
+        args: --verbose --locked --all --release --target ${{ matrix.target }}
