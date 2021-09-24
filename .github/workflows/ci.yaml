@@ -19,16 +19,16 @@ jobs:
     name: check style
     runs-on: ubuntu-latest
     steps:
+
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
         fetch-depth: 1
+
     - name: Get the release version from the tag if available
       shell: bash
-      if: env.VERSION == ''
-      run: |
-        echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-        echo "version is: ${{ env.VERSION }}"
+      run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
     - name: Install Rust
       uses: actions-rs/toolchain@v1
       with:
