@@ -9,6 +9,9 @@ on:
     tags:
       - 'v*.*.*'
 
+env:
+  PKG_NAME: cowsay
+
 jobs:
   style:
     name: check style
@@ -94,3 +97,16 @@ jobs:
         use-cross: ${{ matrix.usecross }}
         command: test
         args: --verbose --locked --all --release --target ${{ matrix.target }}
+
+    - name: Strip release binary (linux and macos only)
+      if: matrix.build == 'linux' || matrix.build == 'macos'
+      run: strip "target/${{ matrix.target }}/release/${{ env.PKG_NAME }}"
+
+    - name: Strip release binary (linux-arm only)
+      if: matrix.build == 'linux-arm'
+      run: |
+        docker run --rm -v \
+          "$PWD/target:/target:Z" \
+          rustembedded/cross:${{ matrix.target }} \
+          ${{ matrix.strip }} \
+          /target/${{ matrix.target }}/release/${{ env.PKG_NAME }}
