@@ -81,7 +81,7 @@ jobs:
       shell: bash
       run: |
         echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        echo "CRATE_VERSION=$(grep -m 1 '^version = ' Cargo.toml | cut -f 3 -d ' ' | tr -d \")" >> $GITHUB_ENV
+        echo "CARGO_VERSION=$(grep -m 1 '^version = ' Cargo.toml | cut -f 3 -d ' ' | tr -d \")" >> $GITHUB_ENV
         echo "PKG_NAME=$(grep -m 1 '^name = ' Cargo.toml | cut -f 3 -d ' ' | tr -d \")" >> $GITHUB_ENV
 
     - name: Validate git tag and Cargo.toml version
@@ -90,6 +90,7 @@ jobs:
       run: |
         if [ "${{ env.VERSION }}" != "${{ env.CARGO_VERSION }}" ]; then
           echo "git tag version (${{ env.VERSION }}) does not match Cargo.toml version (${{ env.CARGO_VERSION }})"
+          exit 1
         fi
 
     - name: Install Rust
