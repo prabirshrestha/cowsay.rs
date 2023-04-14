@@ -9,5 +9,5 @@ description = "cowsay is a program that generates ASCII art pictures of a cow wi
 repository = "https://github.com/prabirshrestha/cowsay.rs"
 
 [dependencies]
-structopt = "0.3.21"
+structopt = "0.3.26"
 colored = "2.0.0"
